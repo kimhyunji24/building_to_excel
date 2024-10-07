@@ -1,9 +1,6 @@
 import pandas as pd
 import openpyxl
-from anyio.abc import value
-from jedi.debug import print_to_stdout
-from openpyxl.styles import Alignment, Border, Side
-
+from openpyxl.styles import Alignment, Border, Side, PatternFill
 
 # Function to get building data from user input
 def get_building_data():
@@ -60,6 +57,11 @@ def create_nested_data(buildings):
             nested_data[building_name][room_num][building_type].append(room_number)
 
     return nested_data
+
+
+
+from openpyxl.styles import PatternFill
+
 def create_grid_layout(nested_data, output_filename):
     # Create a new workbook and sheet using openpyxl
     wb = openpyxl.Workbook()
@@ -102,14 +104,17 @@ def create_grid_layout(nested_data, output_filename):
     thin_border = Border(left=Side(style='thin'), right=Side(style='thin'),
                          top=Side(style='thin'), bottom=Side(style='thin'))
 
-
-    set.cell(row= current_row+2,column=1, value="타입")
-    set.cell(row= current_row+3,column=1, value="라인")
-    set.cell(row= current_row+4,column=1, value="동")
-
+    set.cell(row=current_row + 2, column=1, value="타입")
+    set.cell(row=current_row + 3, column=1, value="라인")
+    set.cell(row=current_row + 4, column=1, value="동")
 
     current_col = 3
     max_floor += 3
+
+    # Define colors for different floor attributes
+    fill_lowest = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")  # Yellow for 최하층
+    fill_penthouse = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")  # Red for 피트층
+    fill_standard = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")  # Green for 기준층
 
     # 동, 라인 번호 우선으로 정렬하여 출력 (라인 순서만 고려)
     for building_name in nested_data.keys():  # 동 이름으로 정렬
@@ -117,20 +122,31 @@ def create_grid_layout(nested_data, output_filename):
 
         for line in nested_data[building_name].keys():  # 라인 번호로 정렬
             for building_type, rooms in nested_data[building_name][line].items():  # 타입별 방 출력
-                set.cell(row=max_floor + 4, column=current_col , value=line).alignment = Alignment(horizontal='center')
-                set.cell(row=max_floor + 4, column=current_col ).border = thin_border
+                set.cell(row=max_floor + 4, column=current_col, value=line).alignment = Alignment(horizontal='center')
+                set.cell(row=max_floor + 4, column=current_col).border = thin_border
+
+                lowest_floor = rooms[0] // 100
 
                 # 방 번호를 층 정보를 기준으로 출력
                 for room_number in rooms:
                     floor = room_number // 100  # 층 정보
                     room_row = max_floor - floor + 1  # 층에 따른 행 번호 조정
+                    if floor == 1:
+                        fill = fill_lowest
+                    elif floor == lowest_floor :
+                        fill = fill_penthouse
+                    else:
+                        fill = fill_standard
 
-                    set.cell(row=room_row, column=current_col , value=room_number).alignment = Alignment(horizontal='right')
-                    set.cell(row=room_row, column=current_col ).border = thin_border
+                    set.cell(row=room_row, column=current_col, value=room_number).alignment = Alignment(
+                        horizontal='right')
+                    set.cell(row=room_row, column=current_col).border = thin_border
+                    set.cell(row=room_row, column=current_col).fill = fill
 
                 # 타입 출력 (라인별로 출력하도록 수정)
-                set.cell(row=max_floor + 3, column=current_col , value=building_type).alignment = Alignment(horizontal='center')
-                set.cell(row=max_floor + 3, column=current_col ).border = thin_border
+                set.cell(row=max_floor + 3, column=current_col, value=building_type).alignment = Alignment(
+                    horizontal='center')
+                set.cell(row=max_floor + 3, column=current_col).border = thin_border
 
                 set.cell(row=max_floor + 5, column=current_col, value=building_name).alignment = Alignment('center')
                 set.cell(row=max_floor + 5, column=current_col, value=building_name).border = thin_border
@@ -138,7 +154,8 @@ def create_grid_layout(nested_data, output_filename):
                 current_col += 1
 
         # 한 동의 출력이 끝나면 merge
-        set.merge_cells(start_row=max_floor + 5, start_column=save_col , end_row=max_floor + 5, end_column=current_col-1)
+        set.merge_cells(start_row=max_floor + 5, start_column=save_col, end_row=max_floor + 5,
+                        end_column=current_col - 1)
         set.cell(row=max_floor + 5, column=save_col).border = thin_border
 
         current_col += 2
