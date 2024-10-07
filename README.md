@@ -7,13 +7,13 @@
     <img src="https://brand.hldni.com/cheongju/image/sub/danji/dong_img3.jpg" height="1200" width = "950">
     <p> [DataSheet] & [GridSheet]
     <br>
-    <img src="img/data_sheet.png" height="700" width = "330" />
-    <img src="img/grid_sheet.png" height="700" width = "620" />
+    <img src="img/data_sheet.png" height="700" width = "330" >
+    <img src="img/grid_sheet.png" height="700" width = "620" >
 </p>
 
 ## 🪄 Stack
 - 기간 : 2024.09.26 (목) ~
-- Tool : Python (pycharm 사용)
+- Language : Python (pycharm 사용)
 
 
 ## 📝Getting Started

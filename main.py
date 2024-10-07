@@ -217,7 +217,7 @@ def main():
     nested_data = create_nested_data(buildings)
 
     # Step 3: Save to intermediate Excel file
-    intermediate_file = "building_room_dataaaa.xlsx"
+    intermediate_file = "building_room_data.xlsx"
     save_to_excel(nested_data, intermediate_file)
     # Step 4: Create grid layout and save final Excel file
     output_file = input("저장하고자하는 최종 파일명을 입력하세요 : ")
