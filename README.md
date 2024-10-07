@@ -1,14 +1,14 @@
-# 📌 building Grid_to_Excel
-건축사에서 배포하는 **배치도**를 엑셀로 제작하기 위한 파이썬 코드를 구현하였습니다.
+# 📌Building Grid_to_Excel
+건설사에서 배포하는 **배치도**를 엑셀로 제작하기 위한 파이썬 코드를 구현하였습니다.
 
 
-**[건축사 배치도 예시 이미지]**
+**[건설사 배치도 예시 이미지]**
 <p float="left">
-    <img src="https://brand.hldni.com/cheongju/image/sub/danji/dong_img3.jpg" height="1234">
+    <img src="https://brand.hldni.com/cheongju/image/sub/danji/dong_img3.jpg" height="1200" width = "950">
     <p> [DataSheet] & [GridSheet]
     <br>
-    <img src="img/data_sheet.png" height="700" />
-    <img src="img/grid_sheet.png" height="700" />
+    <img src="img/data_sheet.png" height="700" width = "330" />
+    <img src="img/grid_sheet.png" height="700" width = "620" />
 </p>
 
 ## 🪄 Stack
